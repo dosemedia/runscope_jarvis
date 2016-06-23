@@ -1,16 +1,44 @@
-Python package to run a suite of runscope tests- currently uses `runscope.yaml` in `/`
+Python package to run a suite of runscope tests- currently uses `runscope.yaml` in your current working directory (see runscope.yaml.example in this repo)
 
-* python setup.py install
-`runscope {suite, eg hermes_health} {target_url}`
+## Usage
+`:> runscope {suite} {base_url}`
 
-*tests run against their default environment (set through the runscope ui). for clarity's sake i have been using the bucket-wide-settings as default with separate environments for QA, Prod etc.*
+```
+  Example ./runscope.yaml:
+  api_token: 'some-kind-of-token-from-runscope'
+  suites:
+    regression:
+      bucket_name: 'Special Api' # Human-readable bucket name
+      test_plan:
+        - 'Happy Path' # Human-readable test name
+        - 'Bad Encoding'
+        - 'Empty Requests'
+```
+...
+```
+# Execute tests
+:> runscope regression https://api.internet.com
+// Your 'Special Api' bucket's tests named 'Happy Path,'
+// 'Bad Encoding,' and 'Empty Requests' will execute
+// simultaneously against the location https://api.internet.com
+```
+### Caveats and assumptions:
+* The system under tests's location (api.internet.com above) will be passed into the Runscope variable {{baseUrl}}.
+* tests run against their default environment (set through the runscope ui). Therefore:
+  * All other variables should be set within the default test environment.  
+  * Integrations with slack, newrelic, etc should also be configured for that default environment.
+  * Locations can also have an effect- specifically setting no default locations will cause the test to exit immediately, and setting multiple will cause the test to run from multiple locations.
+  * We currently assume a 120-second timeout for test completion. If a single test might take longer than that (since they run concurrently) the command will fail.
 
-There are some assumptions built into this when running. First, your default environment should have all variables defined except for the `BaseUrl`, which will be overwritten in any case by the `TARGET_URL` when running in jarvis. Integrations with slack, newrelic, etc should also be configured for that default environment. Locations can also have an effect- specifically setting no locations will cause the test to exit outright, and setting multiple will cause the test to run from multiple locations. This should not affect jarvis' ability to parse and report all test results.
-
-We currently assume a 120-second timeout for test completion. If a single test might take longer than that (since they run concurrently) we'll need to add a capability to set this timeout.
-
-The runscope YAML file itself mostly is only interested in your `suite_name`s for jarvis and your Human-Readable test names (the literal test names from the runscope gui). Those should be consistent with their respective services.
-
-If i think of anything else i'll be sure to let you know.
-
-
+*This is currently a very much beta/0.9 build.*
+### Possible future features might include:
+* better error handling for incomplete input
+* cleaner output/reporters
+* Better api token obfuscation
+* Ability to set timeout
+* configuring test runs more flexibly from the cli, including:
+  * Ability to set other variables
+  * Ability to set test environment
+  * Ability to forego YAML file altogether
+  * Custom names for yaml file.
+  
