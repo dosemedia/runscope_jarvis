@@ -1,0 +1,17 @@
+# Example test run configuration file
+api_token: 'some-kind-of-token-from-runscope'
+suites:
+  regression:
+    bucket_name: 'Special Api' # Human-readable bucket name from Runscope Interface
+    test_plan:
+      - 'Happy Path' # Human-readable test name
+      - 'Bad Encoding'
+      - 'Empty Requests'
+      - 'Authentication Errors'
+      - 'Account Creation'
+  no_touch:
+    bucket_name: 'Special Api'
+    test_plan:
+      - 'Smoke Test'
+      - 'Empty Requests'
+      - 'Bad Encoding'
