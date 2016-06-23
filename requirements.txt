@@ -1,0 +1,5 @@
+requests==2.9.0
+requests-runscope==0.1.6
+wheel==0.24.0
+PyYAML==3.11
+requests-mock==1.0.0

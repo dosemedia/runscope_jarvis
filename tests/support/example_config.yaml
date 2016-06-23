@@ -1,0 +1,16 @@
+## Putting environments here but going to use the default settings capabilities
+# in the runscope GUI for consistency. may need to use the runscope api to get
+# some of these ids.
+api_token: 'whoopee'
+suites:
+  Happy:
+    bucket_name: 'Cool Api'
+    test_plan:
+      - 'Test 1'
+      - 'Test 2'
+    # - 'Cooool'
+  Missing Test:
+    bucket_name: 'Bad Api 1'
+    test_plan:
+      - 'Test 1'
+      - 'Missing Test'
